@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+import "greeter.proto";
+import "farewell/farewell.proto";
+
+package calculator;
+
+option go_package = "simplegrpcserver/proto/gen;mainapipb";
+
+service Calculate {
+    rpc Add (AddRequest) returns (AddResponse);
+}
+
+service Greeter {
+    rpc Greet (HelloRequest) returns (HelloResponse);
+    rpc Add (HelloRequest) returns (HelloResponse);
+}
+
+service BidFarewell {
+    rpc BidGoodBye(farewell.GoodByeRequest) returns (farewell.GoodByeResponse);
+}
+
+message AddRequest {
+    int32 a = 1;
+    int32 b = 2;
+}
+
+message AddResponse {
+    int32 sum = 1;
+}
