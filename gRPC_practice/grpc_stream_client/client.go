@@ -69,4 +69,47 @@ func main() {
 
 	log.Println("SUM:", res.Sum)
 	// -------------- CLIENT SIDE STREAMING ENDS
+
+	// -------------- BI-DIRECTIONAL STREAMING STARTS
+	chatstream, err := client.Chat(ctx)
+	if err != nil {
+		log.Fatalln("Error creating chat stream", err)
+	}
+
+	waitc := make(chan struct{})
+
+	// Send messages in a goroutine
+	go func() {
+		messages := []string{"Hello", "How are you?", "Goodbye"}
+		for _, message := range messages {
+			log.Println("Sending message:", message)
+			err := chatstream.Send(&mainpb.ChatMessage{Message: message})
+			if err != nil {
+				log.Fatal(err)
+			}
+			time.Sleep(time.Second)
+		}
+
+		chatstream.CloseSend()
+	}()
+
+	// Receive messages in goroutine
+	go func() {
+		for {
+			res, err := chatstream.Recv()
+			if err == io.EOF {
+				log.Println("End of stream")
+				break
+			}
+			if err != nil {
+				log.Fatalln("Error reciving data from GenerateFibonacci", err)
+			}
+
+			log.Println("Received response: ",res.GetMessage())
+		}
+
+		close(waitc)
+	}()
+	<-waitc
+	// -------------- BI-DIRECTIONAL STREAMING ENDS
 }
