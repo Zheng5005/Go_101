@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/reflection"
-	// _ "google.golang.org/grpc/encoding/gzip"
+	// _ "google.golang.org/grpc/encoding/gzip" // By simply import this package, all messages will be compresed
 )
 
 type server struct {

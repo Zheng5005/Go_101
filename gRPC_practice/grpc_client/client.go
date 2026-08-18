@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
+	// _ "google.golang.org/grpc/encoding/gzip" // By simply import this package, all messages will be compresed
 )
 
 func main() {
@@ -21,7 +22,7 @@ func main() {
 		log.Fatalln("Failed to load certificates", err)
 	}
 
-	conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(creds)) // grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name))
+	conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(creds)) // grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)) // all request will be compresed
 	if err != nil {
 		log.Fatalln("Did not connect:", err)
 	}
