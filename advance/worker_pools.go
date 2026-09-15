@@ -1,3 +1,4 @@
+// deep drive: https://github.com/romangurevitch/ConcurrencyWorkshop/blob/main/internal/pattern/workerpool/README.md
 package advanced
 
 import (
